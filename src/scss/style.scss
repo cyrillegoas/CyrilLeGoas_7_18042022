@@ -1,13 +1,65 @@
 //COLORS
-$blue: #3282F7;
-$green: #68D9A4;
-$red: #ED6454;
+$blue: #3282f7;
+$green: #68d9a4;
+$red: #ed6454;
 
 // LAYOUT
 $max_width: 1240px;
 
+// RESET
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
 // HEADER
-.header{
+.header {
   max-width: $max_width;
   margin: auto;
   text-align: center;
