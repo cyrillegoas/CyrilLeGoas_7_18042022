@@ -6,6 +6,10 @@ $red: #ed6454;
 // LAYOUT
 $max_width: 1240px;
 
+//FONT
+$lato: Lato, sans-serif;
+$roboto: Roboto, sans-serif;
+
 // RESET
 *,
 *::before,
@@ -56,6 +60,12 @@ h6 {
 #root,
 #__next {
   isolation: isolate;
+}
+
+// ROOT
+:root {
+  font-family: $lato;
+  font-size: 10px;
 }
 
 // HEADER
