@@ -71,7 +71,8 @@ h6 {
 // HEADER
 .header {
   max-width: $max_width;
-  margin: auto;
+  margin: 0 auto 1.7rem;
+  padding: 4.2rem 0 0;
 
   &__logo {
     margin: auto;
