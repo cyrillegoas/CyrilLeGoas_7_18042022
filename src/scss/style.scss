@@ -72,5 +72,8 @@ h6 {
 .header {
   max-width: $max_width;
   margin: auto;
-  text-align: center;
+
+  &__logo {
+    margin: auto;
+  }
 }
