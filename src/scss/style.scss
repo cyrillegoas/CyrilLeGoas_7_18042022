@@ -3,6 +3,8 @@ $blue: #3282f7;
 $green: #68d9a4;
 $red: #ed6454;
 $grey: #e7e7e7;
+$white: #ffffff;
+
 // LAYOUT
 $max_width: 1260px;
 
@@ -113,5 +115,93 @@ main {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 0 1rem;
+  }
+}
+
+// FILTERS
+
+.filters {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.filter {
+  color: $white;
+  font-size: 1.8rem;
+  min-width: 17rem;
+  padding: 1.8rem 0.2rem 1.8rem 1rem;
+  border-radius: 5px;
+  position: relative;
+  background-color: var(--filter-bg);
+
+  &--ingredients {
+    --filter-bg: #{$blue};
+  }
+  &--appliance {
+    --filter-bg: #{$green};
+  }
+  &--ustensils {
+    --filter-bg: #{$red};
+  }
+
+  &__wrapper {
+    display: flex;
+  }
+
+  &__text-input {
+    width: 0;
+    border: 0;
+    color: inherit;
+    background-color: inherit;
+    flex-grow: 1;
+
+    &::placeholder {
+      color: inherit;
+      opacity: 1;
+    }
+  }
+
+  &__expand {
+    color: inherit;
+    background-color: inherit;
+    border: 0;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  &__dropdown {
+    margin: 0;
+    padding: 0 1rem 1.8rem;
+    list-style: none;
+    background-color: var(--filter-bg);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 15rem;
+    grid-template-rows: repeat(
+      2,
+      1fr
+    ); // need to be updated if options.length < 10
+    gap: 0 1rem;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: translateY(100%);
+  }
+
+  &__option {
+    line-height: 1.75;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+      background-color: hsla(0, 0%, 100%, 20%);
+    }
   }
 }

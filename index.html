@@ -38,6 +38,80 @@
             />
           </button>
         </form>
+        <section class="filters">
+          <div class="filter filter--ingredients">
+            <div class="filter__wrapper">
+              <input
+                class="filter__text-input"
+                type="text"
+                aria-label="filter by ingredients"
+                placeholder="Ingredients"
+              />
+              <button
+                class="filter__expand"
+                aria-label="expand listbox"
+                aria-haspopup="listbox"
+              >
+                <img
+                  class="filter__arrow"
+                  src="./public/icons/arrow.svg"
+                  alt="Arrow"
+                />
+              </button>
+            </div>
+            <ul
+              class="filter__dropdown"
+              role="listbox"
+              aria-label="filter options"
+              tabindex="0"
+            >
+              <li class="filter__option" role="option">huile</li>
+              <li class="filter__option" role="option">carotte</li>
+            </ul>
+          </div>
+          <div class="filter filter--appliance">
+            <div class="filter__wrapper">
+              <input
+                class="filter__text-input"
+                type="text"
+                aria-label="filter by appliance"
+                placeholder="Appareils"
+              />
+              <button
+                class="filter__expand"
+                aria-label="expand listbox"
+                aria-haspopup="listbox"
+              >
+                <img
+                  class="filter__arrow"
+                  src="./public/icons/arrow.svg"
+                  alt="Arrow"
+                />
+              </button>
+            </div>
+          </div>
+          <div class="filter filter--ustensils">
+            <div class="filter__wrapper">
+              <input
+                class="filter__text-input"
+                type="text"
+                aria-label="filter by ustensils"
+                placeholder="Ustensiles"
+              />
+              <button
+                class="filter__expand"
+                aria-label="expand listbox"
+                aria-haspopup="listbox"
+              >
+                <img
+                  class="filter__arrow"
+                  src="./public/icons/arrow.svg"
+                  alt="Arrow"
+                />
+              </button>
+            </div>
+          </div>
+        </section>
       </section>
     </main>
   </body>
