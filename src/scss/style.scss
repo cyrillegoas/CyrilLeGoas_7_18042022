@@ -4,7 +4,7 @@ $green: #68d9a4;
 $red: #ed6454;
 $grey: #e7e7e7;
 // LAYOUT
-$max_width: 1240px;
+$max_width: 1260px;
 
 //FONT
 $lato: Lato, sans-serif;
@@ -72,7 +72,7 @@ h6 {
 .header {
   max-width: $max_width;
   margin: 0 auto 1.7rem;
-  padding: 4.2rem 0 0;
+  padding: 4.2rem 1rem 0;
 
   &__logo {
     margin: auto;
@@ -83,6 +83,7 @@ h6 {
 main {
   max-width: $max_width;
   margin: auto;
+  padding: 0 1rem;
 }
 
 // SEARCH
