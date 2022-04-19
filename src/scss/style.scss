@@ -23,6 +23,12 @@ $roboto: Roboto, sans-serif;
   margin: 0;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 html,
 body {
   height: 100%;
@@ -124,6 +130,7 @@ main {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+  margin-bottom: 2.5rem;
 }
 
 .filter {
@@ -171,9 +178,7 @@ main {
   }
 
   &__dropdown {
-    margin: 0;
     padding: 0 1rem 1.8rem;
-    list-style: none;
     background-color: var(--filter-bg);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -203,5 +208,78 @@ main {
     &:hover {
       background-color: hsla(0, 0%, 100%, 20%);
     }
+  }
+}
+
+// RECIPES
+.recipes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(38rem, 1fr));
+  gap: 5rem;
+}
+
+.recipe {
+  background-color: $grey;
+  border-radius: 5px;
+
+  &__img {
+    height: 17.8rem;
+    width: 100%;
+    object-fit: cover;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &__desc {
+    padding: 2rem;
+  }
+
+  &__title-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.8rem;
+  }
+
+  &__title {
+    margin-right: auto;
+    font-size: 1.8rem;
+    font-weight: normal;
+  }
+
+  &__timer-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  &__timer-icon {
+    width: 2rem;
+  }
+
+  &__timer-min {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+
+  &__instructions-wrapper {
+    display: flex;
+  }
+
+  &__ingredients {
+    flex: 1;
+    flex-basis: 50%;
+    font-size: 1.2rem;
+
+    & span {
+      font-weight: bold;
+    }
+  }
+
+  &__instructions {
+    flex: 1;
+    flex-basis: 50%;
+    font-size: 1.2rem;
+    font-family: $roboto;
   }
 }
