@@ -152,6 +152,15 @@ main {
     --filter-bg: #{$red};
   }
 
+  &__arrow {
+    transform: rotate(0deg);
+    transition: transform 0.2s ease;
+  }
+
+  &--open .filter__arrow {
+    transform: rotate(180deg);
+  }
+
   &__wrapper {
     display: flex;
   }
@@ -175,6 +184,11 @@ main {
     border: 0;
     flex-grow: 0;
     flex-shrink: 0;
+    cursor: pointer;
+
+    &:hover {
+      background-color: hsla(0, 0%, 100%, 20%);
+    }
   }
 
   &__dropdown {
@@ -186,10 +200,7 @@ main {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 15rem;
-    grid-template-rows: repeat(
-      2,
-      1fr
-    ); // need to be updated if options.length < 10
+    grid-template-rows: repeat(10, 1fr);
     gap: 0 1rem;
 
     position: absolute;
