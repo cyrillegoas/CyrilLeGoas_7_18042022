@@ -8,7 +8,6 @@ function buildTableSet(array, key) {
     table.set(item[key], item);
     set.add(item[key]);
   });
-  console.log('test');
   return { table, set };
 }
 
