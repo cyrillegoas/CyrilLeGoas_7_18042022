@@ -5,6 +5,8 @@
     "browser": true
   },
   "rules": {
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error",
     "no-param-reassign": [
       2,
       {
