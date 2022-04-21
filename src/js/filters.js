@@ -7,7 +7,7 @@ class Filter {
     openOptionBtn.addEventListener('click', () => this.handleBtnEvent());
   }
 
-  addOptions(options) {
+  _buildOptionsHtml(options) {
     const html = `
       <ul
         class="filter__dropdown"
@@ -25,44 +25,64 @@ class Filter {
       </ul>
     `;
     this.filter.insertAdjacentHTML('beforeend', html);
+  }
 
+  _resizeOptionsList(options) {
     const dropdown = this.filter.querySelector('.filter__dropdown');
     dropdown.style.gridTemplateRows = `repeat(${
       options.size >= 10 ? '10' : `${options.size}`
     },1fr)`;
+  }
 
+  _setfilterWidth() {
+    const dropdown = this.filter.querySelector('.filter__dropdown');
     const dropdownWidth = dropdown.clientWidth;
     this.filter.style.width = `${dropdownWidth}px`;
-    this.filter.classList.add('filter--open');
+    this._toogleFilterOpenClass();
+  }
+
+  _resetFilterWidth() {
+    this.filter.style.width = ``;
+  }
+
+  _toogleFilterOpenClass() {
+    this.filter.classList.toggle('filter--open');
+  }
+
+  _isFilterOpen() {
+    return !!this.filter.classList.contains('filter--open');
+  }
+
+  addOptions(options) {
+    this._buildOptionsHtml(options);
+    this._resizeOptionsList(options);
+    this._setfilterWidth();
   }
 
   clearOptions() {
-    const options = this.filter.querySelector('.filter__dropdown');
-    options.remove();
-    this.filter.style.width = ``;
-    this.filter.classList.remove('filter--open');
+    const dropdown = this.filter.querySelector('.filter__dropdown');
+    dropdown.remove();
+    this._resetFilterWidth();
+    this._toogleFilterOpenClass();
   }
 
   handleBtnEvent() {
-    if (this.filter.classList.contains('filter--open')) {
-      this.clearOptions();
-    } else {
-      const test = new Set([
-        'pomme',
-        'poire',
-        'cerise',
-        'banane',
-        'orange',
-        'fraise',
-        'franboise',
-        'kiwi',
-        'mures',
-        'pruneau',
-        'clementine',
-        'mangue',
-      ]);
-      this.addOptions(test);
-    }
+    const test = new Set([
+      'pomme',
+      'poire',
+      'cerise',
+      'banane',
+      'orange',
+      'fraise',
+      'franboise',
+      'kiwi',
+      'mures',
+      'pruneau',
+      'clementine',
+      'mangue',
+    ]);
+
+    this._isFilterOpen() ? this.clearOptions() : this.addOptions(test);
   }
 }
 
