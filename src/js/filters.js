@@ -49,7 +49,7 @@ class Filter {
     this.filter.classList.toggle('filter--open');
   }
 
-  _isFilterOpen() {
+  isFilterOpen() {
     return !!this.filter.classList.contains('filter--open');
   }
 
@@ -82,7 +82,7 @@ class Filter {
       'mangue',
     ]);
 
-    this._isFilterOpen() ? this.clearOptions() : this.addOptions(test);
+    this.isFilterOpen() ? this.clearOptions() : this.addOptions(test);
   }
 }
 
@@ -95,3 +95,24 @@ export const applianceFilter = new Filter(
 export const ustensilsFilter = new Filter(
   document.querySelector('.filter--ustensils')
 );
+
+ingredientFilter.filter.addEventListener('click', (event) => {
+  event.stopPropagation();
+  if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
+  if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
+});
+applianceFilter.filter.addEventListener('click', (event) => {
+  event.stopPropagation();
+  if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
+  if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
+});
+ustensilsFilter.filter.addEventListener('click', (event) => {
+  event.stopPropagation();
+  if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
+  if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
+});
+document.addEventListener('click', () => {
+  if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
+  if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
+  if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
+});
