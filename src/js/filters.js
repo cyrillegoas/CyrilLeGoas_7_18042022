@@ -1,6 +1,7 @@
 class Filter {
   constructor(element) {
     this.filter = element;
+    this.filterType = this.filter.dataset.type;
     const openOptionBtn = this.filter.querySelector('.filter__expand');
     const textInput = this.filter.querySelector('.filter__text-input');
 
