@@ -2,9 +2,11 @@ class Filter {
   constructor(element) {
     this.filter = element;
     const openOptionBtn = this.filter.querySelector('.filter__expand');
+    const textInput = this.filter.querySelector('.filter__text-input');
 
     // EVENT LISTENERS
-    openOptionBtn.addEventListener('click', () => this.handleBtnEvent());
+    openOptionBtn.addEventListener('click', () => this._handleBtnEvent());
+    textInput.addEventListener('click', () => this._handleInputEvent());
   }
 
   _buildOptionsHtml(options) {
@@ -66,7 +68,7 @@ class Filter {
     this._toogleFilterOpenClass();
   }
 
-  handleBtnEvent() {
+  _handleBtnEvent() {
     const test = new Set([
       'pomme',
       'poire',
@@ -83,6 +85,24 @@ class Filter {
     ]);
 
     this.isFilterOpen() ? this.clearOptions() : this.addOptions(test);
+  }
+
+  _handleInputEvent() {
+    const test = new Set([
+      'pomme',
+      'poire',
+      'cerise',
+      'banane',
+      'orange',
+      'fraise',
+      'franboise',
+      'kiwi',
+      'mures',
+      'pruneau',
+      'clementine',
+      'mangue',
+    ]);
+    if (!this.isFilterOpen()) this.addOptions(test);
   }
 }
 
