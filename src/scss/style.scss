@@ -157,8 +157,13 @@ main {
     transition: transform 0.2s ease;
   }
 
-  &--open .filter__arrow {
-    transform: rotate(180deg);
+  &--open {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+
+    & .filter__arrow {
+      transform: rotate(180deg);
+    }
   }
 
   &__wrapper {
