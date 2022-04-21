@@ -34,8 +34,11 @@ function buildData(recipes) {
 }
 
 const allRecipes = buildData(recipes);
-const ingredientsTrie = new Trie(Object.keys(allRecipes.ingredients));
-const appliancesTrie = new Trie(Object.keys(allRecipes.appliances));
-const ustensilsTrie = new Trie(Object.keys(allRecipes.ustensils));
 
-export { allRecipes, ingredientsTrie, appliancesTrie, ustensilsTrie };
+const tries = {
+  ingredients: new Trie(Object.keys(allRecipes.ingredients)),
+  appliances: new Trie(Object.keys(allRecipes.appliances)),
+  ustensils: new Trie(Object.keys(allRecipes.ustensils)),
+};
+
+export { allRecipes, tries };
