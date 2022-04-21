@@ -3,7 +3,7 @@ import { Trie } from './trie';
 
 function buildData(recipes) {
   const table = new Map();
-  const set = new Set();
+  const ids = [];
   const ingredients = {};
   const appliances = {};
   const ustensils = {};
@@ -14,7 +14,7 @@ function buildData(recipes) {
       ustensil.toLowerCase()
     );
     table.set(recipe.id, recipe);
-    set.add(recipe.id);
+    ids.push(recipe.id);
 
     recipe.ingredients.forEach((item) => {
       const ingredient = item.ingredient.toLowerCase();
@@ -30,7 +30,7 @@ function buildData(recipes) {
       else ustensils[ustensil].push(recipe.id);
     });
   });
-  return { table, set, ingredients, appliances, ustensils };
+  return { table, ids, ingredients, appliances, ustensils };
 }
 
 const allRecipes = buildData(recipes);

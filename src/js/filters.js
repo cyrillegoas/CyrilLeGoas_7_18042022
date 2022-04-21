@@ -33,7 +33,7 @@ class Filter {
   _resizeOptionsList(options) {
     const dropdown = this.filter.querySelector('.filter__dropdown');
     dropdown.style.gridTemplateRows = `repeat(${
-      options.size >= 10 ? '10' : `${options.size}`
+      options.length >= 10 ? '10' : `${options.length}`
     },1fr)`;
   }
 
@@ -75,7 +75,7 @@ class Filter {
   }
 
   _handleBtnEvent() {
-    const test = new Set([
+    const test = [
       'pomme',
       'poire',
       'cerise',
@@ -88,13 +88,13 @@ class Filter {
       'pruneau',
       'clementine',
       'mangue',
-    ]);
+    ];
 
     this.isFilterOpen() ? this.clearOptions() : this.addOptions(test);
   }
 
   _handleInputEvent() {
-    const test = new Set([
+    const test = [
       'pomme',
       'poire',
       'cerise',
@@ -107,7 +107,7 @@ class Filter {
       'pruneau',
       'clementine',
       'mangue',
-    ]);
+    ];
     if (!this.isFilterOpen()) this.addOptions(test);
   }
 }
