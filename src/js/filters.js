@@ -3,11 +3,11 @@ class Filter {
     this.filter = element;
     this.filterType = this.filter.dataset.type;
     const openOptionBtn = this.filter.querySelector('.filter__expand');
-    const textInput = this.filter.querySelector('.filter__text-input');
+    this.textInput = this.filter.querySelector('.filter__text-input');
 
     // EVENT LISTENERS
     openOptionBtn.addEventListener('click', () => this._handleBtnEvent());
-    textInput.addEventListener('click', () => this._handleInputEvent());
+    this.textInput.addEventListener('click', () => this._handleInputEvent());
   }
 
   _buildOptionsHtml(options) {
@@ -52,6 +52,10 @@ class Filter {
     this.filter.classList.toggle('filter--open');
   }
 
+  _clearInputValue() {
+    this.textInput.value = '';
+  }
+
   isFilterOpen() {
     return !!this.filter.classList.contains('filter--open');
   }
@@ -65,6 +69,7 @@ class Filter {
   clearOptions() {
     const dropdown = this.filter.querySelector('.filter__dropdown');
     dropdown.remove();
+    this._clearInputValue();
     this._resetFilterWidth();
     this._toogleFilterOpenClass();
   }
