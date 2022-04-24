@@ -58,7 +58,7 @@ class Node {
   complete(string) {
     // find last node of string
     const node = this._findLastNode(string);
-    if (!node) return null;
+    if (!node) return ['no match'];
     // call function that return all possibilities on said node
     const suggestions = node._possibilities(string);
 
