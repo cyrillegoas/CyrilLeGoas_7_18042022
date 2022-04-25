@@ -249,7 +249,10 @@ class Filter {
 
   _handleOptionSelection(event) {
     const { target } = event;
-    if (target.classList.contains('filter__option')) {
+    if (
+      target.classList.contains('filter__option') &&
+      target.textContent !== 'no match'
+    ) {
       selectedFilters[this.filterType].add(target.textContent);
       const filteredRecipes = intersectionFilters();
       const options = get[this.filterType](filteredRecipes);
