@@ -211,7 +211,7 @@ class Filter {
     const inputValue = this.textInput.value;
     const filteredRecipes = intersectionFilters();
     let options = [];
-    if (inputValue.length < 3) options = get[this.filterType](filteredRecipes);
+    if (!inputValue.length) options = get[this.filterType](filteredRecipes);
     else
       options = tries[this.filterType].getPossibilities(
         inputValue.toLowerCase()
