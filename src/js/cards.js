@@ -43,7 +43,7 @@ export const recipesCards = {
           </div>
         </li>`;
     });
-    this.cardsContainer.insertAdjacentHTML('beforeend', html);
+    this.cardsContainer.innerHTML = html;
   },
   clearCards() {
     this.cardsContainer.innerHTML = '';
