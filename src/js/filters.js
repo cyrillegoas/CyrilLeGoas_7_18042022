@@ -106,7 +106,8 @@ const get = {
   },
 };
 
-function optionsHtml(options) {
+function optionsHtml(array) {
+  const options = !array.length ? ['no match'] : [...array];
   return options.reduce((optionList, option) => {
     optionList += `<li class="filter__option" role="option">${option}</li>`;
     return optionList;
@@ -170,7 +171,8 @@ class Filter {
     );
   }
 
-  _updateOptions(options) {
+  _updateOptions(array) {
+    const options = !array.length ? ['no match'] : [...array];
     const dropdown = this.filter.querySelector('.filter__dropdown');
     dropdown.innerHTML = optionsHtml(options);
     this._resizeOptionsList(options);
@@ -180,7 +182,7 @@ class Filter {
   _resizeOptionsList(options) {
     const dropdown = this.filter.querySelector('.filter__dropdown');
     dropdown.style.gridTemplateRows = `repeat(${
-      options.length >= 10 ? '10' : `${options.length}`
+      options.length >= 10 ? '10' : `${!options.length ? '1' : options.length}`
     },1fr)`;
   }
 
