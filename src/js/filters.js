@@ -67,7 +67,21 @@ const get = {
       }, new Set())
     ).slice(0, 30);
   },
-  ustensils() {},
+  ustensils(filteredRecipes) {
+    if (filteredRecipes === allRecipes.ids)
+      return Object.keys(allRecipes.ustensils).slice(0, 30);
+
+    return Array.from(
+      filteredRecipes.reduce((ustensils, id) => {
+        const recipeUstensils = allRecipes.table.get(id).ustensils;
+        recipeUstensils.forEach((ustensil) => {
+          if (!selectedFilters.ustensils.has(ustensil.toLowerCase()))
+            ustensils.add(ustensil.toLowerCase());
+        });
+        return ustensils;
+      }, new Set())
+    ).slice(0, 30);
+  },
 };
 
 function optionsHtml(options) {
