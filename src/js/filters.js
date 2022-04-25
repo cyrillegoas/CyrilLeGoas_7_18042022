@@ -1,7 +1,7 @@
 import { allRecipes, tries } from './dataBuilder';
 import { recipesCards } from './cards';
 
-const selectedFilters = {
+export const selectedFilters = {
   ingredients: new Set(),
   appliances: new Set(),
   ustensils: new Set(),
@@ -37,7 +37,7 @@ const filterByUstensils = intersection(
   allRecipes.ustensils
 );
 
-function intersectionFilters() {
+export function intersectionFilters() {
   const array = [
     filterByIngredients(),
     filterByAppliances(),
@@ -111,6 +111,32 @@ function optionsHtml(options) {
     optionList += `<li class="filter__option" role="option">${option}</li>`;
     return optionList;
   }, '');
+}
+
+function addTag(name, type) {
+  const tagsContainer = document.querySelector('.tags-container');
+  const html = `<li class="tag tag--${type}" data-name="${name}" data-type="${type}">
+                  <span class="tag__name">${name}</span>
+                  <img
+                    class="tag__remove-icon"
+                    src="./public/icons/close.svg"
+                    alt="remove tag"
+                  />
+                </li>`;
+
+  tagsContainer.insertAdjacentHTML('beforeend', html);
+}
+
+function handleTagClick(event) {
+  const clickedElement = event.target;
+  if (clickedElement.classList.contains('tag')) {
+    const filterType = clickedElement.dataset.type;
+    const filterName = clickedElement.dataset.name;
+    selectedFilters[filterType].delete(filterName);
+    clickedElement.remove();
+    const filteredRecipes = intersectionFilters();
+    recipesCards.addCards(filteredRecipes);
+  }
 }
 
 class Filter {
@@ -227,6 +253,7 @@ class Filter {
       const options = get[this.filterType](filteredRecipes);
       this._updateOptions(options);
       recipesCards.addCards(filteredRecipes);
+      addTag(target.textContent, this.filterType);
     }
   }
 }
@@ -264,3 +291,6 @@ document.addEventListener('click', () => {
   if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
   if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
 });
+
+const tagsContainer = document.querySelector('.tags-container');
+tagsContainer.addEventListener('click', (event) => handleTagClick(event));
