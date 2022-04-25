@@ -115,7 +115,6 @@ class Filter {
     const dropdown = this.filter.querySelector('.filter__dropdown');
     const dropdownWidth = dropdown.clientWidth;
     this.filter.style.width = `${dropdownWidth}px`;
-    this._toogleFilterOpenClass();
   }
 
   _resetFilterWidth() {
@@ -138,6 +137,7 @@ class Filter {
     this._buildDropdownHtml(options);
     this._resizeOptionsList(options);
     this._setfilterWidth();
+    this._toogleFilterOpenClass();
   }
 
   clearOptions() {
