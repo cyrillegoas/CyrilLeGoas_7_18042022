@@ -54,7 +54,19 @@ const get = {
       }, new Set())
     ).slice(0, 30);
   },
-  appliances() {},
+  appliances(filteredRecipes) {
+    if (filteredRecipes === allRecipes.ids)
+      return Object.keys(allRecipes.appliances).slice(0, 30);
+
+    return Array.from(
+      filteredRecipes.reduce((appliances, id) => {
+        const appliance = allRecipes.table.get(id).appliance.toLowerCase();
+        if (!selectedFilters.appliances.has(appliance))
+          appliances.add(appliance);
+        return appliances;
+      }, new Set())
+    ).slice(0, 30);
+  },
   ustensils() {},
 };
 
