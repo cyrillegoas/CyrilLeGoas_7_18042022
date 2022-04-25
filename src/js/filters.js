@@ -37,6 +37,28 @@ const filterByUstensils = intersection(
   allRecipes.ustensils
 );
 
+function intersectionFilters() {
+  const array = [
+    filterByIngredients(),
+    filterByAppliances(),
+    filterByUstensils(),
+  ];
+  const arrayWithoutEmptyItem = array.reduce((acc, item) => {
+    if (item.length) acc.push(item);
+    return acc;
+  }, []);
+  if (!arrayWithoutEmptyItem.length) return allRecipes.ids;
+
+  let sharedIds = arrayWithoutEmptyItem[0];
+  for (let i = 1; i < arrayWithoutEmptyItem.length; i++) {
+    sharedIds = sharedIds.filter(
+      Set.prototype.has,
+      new Set(arrayWithoutEmptyItem[i])
+    );
+  }
+  return sharedIds;
+}
+
 const get = {
   ingredients(filteredRecipes) {
     if (filteredRecipes === allRecipes.ids)
@@ -92,9 +114,8 @@ function optionsHtml(options) {
 }
 
 class Filter {
-  constructor(element, filterFunction) {
+  constructor(element) {
     this.filter = element;
-    this.filterFunction = filterFunction;
     this.filterType = this.filter.dataset.type;
     const openOptionBtn = this.filter.querySelector('.filter__expand');
     this.textInput = this.filter.querySelector('.filter__text-input');
@@ -175,20 +196,20 @@ class Filter {
   }
 
   _handleBtnEvent() {
-    const filteredRecipes = this.filterFunction();
+    const filteredRecipes = intersectionFilters();
     const options = get[this.filterType](filteredRecipes);
     this.isFilterOpen() ? this.clearOptions() : this.addOptions(options);
   }
 
   _handleInputEvent() {
-    const filteredRecipes = this.filterFunction();
+    const filteredRecipes = intersectionFilters();
     const options = get[this.filterType](filteredRecipes);
     if (!this.isFilterOpen()) this.addOptions(options);
   }
 
   _handleKeyupEvent() {
     const inputValue = this.textInput.value;
-    const filteredRecipes = this.filterFunction();
+    const filteredRecipes = intersectionFilters();
     let options = [];
     if (inputValue.length < 3) options = get[this.filterType](filteredRecipes);
     else
@@ -202,7 +223,7 @@ class Filter {
     const { target } = event;
     if (target.classList.contains('filter__option')) {
       selectedFilters[this.filterType].add(target.textContent);
-      const filteredRecipes = this.filterFunction();
+      const filteredRecipes = intersectionFilters();
       const options = get[this.filterType](filteredRecipes);
       this._updateOptions(options);
       recipesCards.addCards(filteredRecipes);
