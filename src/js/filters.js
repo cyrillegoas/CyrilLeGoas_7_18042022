@@ -341,14 +341,15 @@ class Filter {
  * Search bar
  */
 const searchBar = {
+  filteredIds: allRecipes.ids,
   init() {
     this.input = document.querySelector('.search-primary__input');
     this.input.addEventListener('keyup', () => this.filter());
   },
   filter() {
-    // TODO: fix -> trigger for every keyup even when repaint is not needed
     const inputValue = this.input.value.toLowerCase();
     if (inputValue.length < 3) {
+      if (this.filteredIds === allRecipes.ids) return;
       this.filteredIds = allRecipes.ids;
     } else {
       this.filteredIds = union([
