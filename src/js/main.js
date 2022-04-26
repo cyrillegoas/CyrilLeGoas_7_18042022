@@ -1,5 +1,6 @@
 import { allRecipes } from './dataBuilder';
 import { recipesCards } from './cards';
-import { ingredientFilter } from './filters';
+import { filterInit } from './filters';
 
 recipesCards.addCards(allRecipes.ids);
+filterInit();

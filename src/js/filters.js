@@ -7,6 +7,12 @@ export const selectedFilters = {
   ustensils: new Set(),
 };
 
+/**
+ * Returns the intersection between lists of ids coresponding to each filter keyword.
+ * @param {set} selectedFilters - set of selected filter keyword
+ * @param {object} filterTable - object containing paires of keyword / recipes ids
+ * @returns {array} array of ids shared between filters
+ */
 function intersection(selectedFilters, filterTable) {
   return () => {
     if (!selectedFilters.size) return allRecipes.ids;
@@ -37,12 +43,14 @@ const filterByUstensils = intersection(
   allRecipes.ustensils
 );
 
-export function intersectionFilters() {
+// todo: need to be generic and move to utils
+function intersectionFilters() {
   const array = [
     filterByIngredients(),
     filterByAppliances(),
     filterByUstensils(),
   ];
+  // todo: arrayWithoutEmptyItem need to be removed
   const arrayWithoutEmptyItem = array.reduce((acc, item) => {
     if (item.length) acc.push(item);
     return acc;
@@ -59,6 +67,11 @@ export function intersectionFilters() {
   return sharedIds;
 }
 
+/**
+ * Collection of methods returning the remaining ingredients/appliances/ustensils.
+ * @param {array} filteredRecipes - array of recipe ids
+ * @returns {array} remaining ingredients/appliances/ustensils
+ */
 const get = {
   ingredients(filteredRecipes) {
     if (filteredRecipes === allRecipes.ids)
@@ -106,14 +119,24 @@ const get = {
   },
 };
 
-function optionsHtml(array) {
-  const options = !array.length ? ['no match'] : [...array];
+/**
+ * Return list items html from an array of ingredients/appliances/ustensils.
+ * @param {array} dropdownOptions - array of ingredients/appliances/ustensils
+ * @returns {string} html li elements
+ */
+function optionsHtml(dropdownOptions) {
+  const options = !dropdownOptions.length ? ['no match'] : [...dropdownOptions];
   return options.reduce((optionList, option) => {
     optionList += `<li class="filter__option" role="option">${option}</li>`;
     return optionList;
   }, '');
 }
 
+/**
+ * Add a tag to the tag list.
+ * @param {string} name - name of the tag
+ * @param {string} type - type of tag, can be either ingredients, appliances or ustensils
+ */
 function addTag(name, type) {
   const tagsContainer = document.querySelector('.tags-container');
   const html = `<li class="tag tag--${type}" data-name="${name}" data-type="${type}">
@@ -128,6 +151,10 @@ function addTag(name, type) {
   tagsContainer.insertAdjacentHTML('beforeend', html);
 }
 
+/**
+ * Remove tag from the tag list and filter/update recipes accordingly.
+ * @param {object} event - click event on tags
+ */
 function handleTagClick(event) {
   const clickedElement = event.target;
   if (clickedElement.classList.contains('tag')) {
@@ -153,6 +180,10 @@ class Filter {
     this.textInput.addEventListener('keyup', () => this._handleKeyupEvent());
   }
 
+  /**
+   * Build dropdown html and add it to DOM.
+   * @param {array} options - array of ingredients/appliances/ustensils
+   */
   _buildDropdownHtml(options) {
     const html = `
       <ul
@@ -171,14 +202,24 @@ class Filter {
     );
   }
 
-  _updateOptions(array) {
-    const options = !array.length ? ['no match'] : [...array];
+  /**
+   * Update list of options within a dropdown.
+   * @param {*} dropdownOptions  - array of ingredients/appliances/ustensils
+   */
+  _updateOptions(dropdownOptions) {
+    const options = !dropdownOptions.length
+      ? ['no match']
+      : [...dropdownOptions];
     const dropdown = this.filter.querySelector('.filter__dropdown');
     dropdown.innerHTML = optionsHtml(options);
     this._resizeOptionsList(options);
     this._setfilterWidth();
   }
 
+  /**
+   * Update the number of row in the dropdown grid.
+   * @param {*} options - array of ingredients/appliances/ustensils
+   */
   _resizeOptionsList(options) {
     const dropdown = this.filter.querySelector('.filter__dropdown');
     dropdown.style.gridTemplateRows = `repeat(${
@@ -186,28 +227,48 @@ class Filter {
     },1fr)`;
   }
 
+  /**
+   * Update the filter width to match the dropdown.
+   */
   _setfilterWidth() {
     const dropdown = this.filter.querySelector('.filter__dropdown');
     const dropdownWidth = dropdown.clientWidth;
     this.filter.style.width = `${dropdownWidth}px`;
   }
 
+  /**
+   * Reset the filter width to its original size.
+   */
   _resetFilterWidth() {
     this.filter.style.width = ``;
   }
 
+  /**
+   * Toggle the filter-open class (used for arrow animation).
+   */
   _toogleFilterOpenClass() {
     this.filter.classList.toggle('filter--open');
   }
 
+  /**
+   * Reset the input value.
+   */
   _clearInputValue() {
     this.textInput.value = '';
   }
 
+  /**
+   * Check if the dropdown is open or not.
+   * @returns {boolean}
+   */
   isFilterOpen() {
     return !!this.filter.classList.contains('filter--open');
   }
 
+  /**
+   * ADD filter dropdown to the DOM.
+   * @param {*} options - array of ingredients/appliances/ustensils
+   */
   addOptions(options) {
     this._buildDropdownHtml(options);
     this._resizeOptionsList(options);
@@ -215,6 +276,9 @@ class Filter {
     this._toogleFilterOpenClass();
   }
 
+  /**
+   * Remove filter dropdown from the DOM.
+   */
   clearOptions() {
     const dropdown = this.filter.querySelector('.filter__dropdown');
     dropdown.remove();
@@ -223,21 +287,33 @@ class Filter {
     this._toogleFilterOpenClass();
   }
 
+  /**
+   * Handle click event on the filter button.
+   * Will open/close the dropdown depending of its current state.
+   */
   _handleBtnEvent() {
     const filteredRecipes = intersectionFilters();
     const options = get[this.filterType](filteredRecipes);
     this.isFilterOpen() ? this.clearOptions() : this.addOptions(options);
   }
 
+  /**
+   * Handle click event on the filter input
+   * Will open the dropdown if closed.
+   */
   _handleInputEvent() {
     const filteredRecipes = intersectionFilters();
     const options = get[this.filterType](filteredRecipes);
     if (!this.isFilterOpen()) this.addOptions(options);
   }
 
+  /**
+   * Handle keyup event.
+   * Will try to auto-complete the user input and update options list accordingly.
+   */
   _handleKeyupEvent() {
     const inputValue = this.textInput.value;
-    const filteredRecipes = intersectionFilters();
+    const filteredRecipes = intersectionFilters(); // todo: move to if statement below
     let options = [];
     if (!inputValue.length) options = get[this.filterType](filteredRecipes);
     else
@@ -247,11 +323,17 @@ class Filter {
     this._updateOptions(options);
   }
 
+  /**
+   * Handle click event on an option form the dropdown.
+   * Filter recipe and update option list with new filter option.
+   * @param {object} event - click event on an option
+   */
   _handleOptionSelection(event) {
     const { target } = event;
     if (
       target.classList.contains('filter__option') &&
       target.textContent !== 'no match'
+      // todo: need to check if keyword is not already added
     ) {
       selectedFilters[this.filterType].add(target.textContent);
       const filteredRecipes = intersectionFilters();
@@ -263,39 +345,46 @@ class Filter {
   }
 }
 
-export const ingredientFilter = new Filter(
-  document.querySelector('.filter--ingredients'),
-  filterByIngredients
-);
-export const applianceFilter = new Filter(
-  document.querySelector('.filter--appliance'),
-  filterByAppliances
-);
-export const ustensilsFilter = new Filter(
-  document.querySelector('.filter--ustensils'),
-  filterByUstensils
-);
+/**
+ * Filter initialization.
+ */
+export function filterInit() {
+  const ingredientFilter = new Filter(
+    document.querySelector('.filter--ingredients'),
+    filterByIngredients
+  );
+  const applianceFilter = new Filter(
+    document.querySelector('.filter--appliance'),
+    filterByAppliances
+  );
+  const ustensilsFilter = new Filter(
+    document.querySelector('.filter--ustensils'),
+    filterByUstensils
+  );
+  const tagsContainer = document.querySelector('.tags-container');
 
-ingredientFilter.filter.addEventListener('click', (event) => {
-  event.stopPropagation();
-  if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
-  if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
-});
-applianceFilter.filter.addEventListener('click', (event) => {
-  event.stopPropagation();
-  if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
-  if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
-});
-ustensilsFilter.filter.addEventListener('click', (event) => {
-  event.stopPropagation();
-  if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
-  if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
-});
-document.addEventListener('click', () => {
-  if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
-  if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
-  if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
-});
+  // CLOSE FILTERS IF CLICKED OUTSIDE OR ON OTHER FILTER
+  ingredientFilter.filter.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
+    if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
+  });
+  applianceFilter.filter.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
+    if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
+  });
+  ustensilsFilter.filter.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
+    if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
+  });
+  document.addEventListener('click', () => {
+    if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
+    if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
+    if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
+  });
 
-const tagsContainer = document.querySelector('.tags-container');
-tagsContainer.addEventListener('click', (event) => handleTagClick(event));
+  // REMOVE TAG IF CLICKED
+  tagsContainer.addEventListener('click', (event) => handleTagClick(event));
+}
