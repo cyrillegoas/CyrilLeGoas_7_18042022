@@ -304,10 +304,11 @@ class Filter {
    */
   _handleKeyupEvent() {
     const inputValue = this.textInput.value;
-    const filteredRecipes = intersectionFilters(); // todo: move to if statement below
     let options = [];
-    if (!inputValue.length) options = get[this.filterType](filteredRecipes);
-    else
+    if (!inputValue.length) {
+      const filteredRecipes = intersectionFilters();
+      options = get[this.filterType](filteredRecipes);
+    } else
       options = tries[this.filterType].getPossibilities(
         inputValue.toLowerCase()
       );
