@@ -1,7 +1,8 @@
 import { allRecipes, tries } from './dataBuilder';
 import { recipesCards } from './cards';
+import { intersection } from './utils';
 
-export const selectedFilters = {
+const selectedFilters = {
   ingredients: new Set(),
   appliances: new Set(),
   ustensils: new Set(),
@@ -13,7 +14,7 @@ export const selectedFilters = {
  * @param {object} filterTable - object containing paires of keyword / recipes ids
  * @returns {array} array of ids shared between filters
  */
-function intersection(selectedFilters, filterTable) {
+function intersectionFilter(selectedFilters, filterTable) {
   return () => {
     if (!selectedFilters.size) return allRecipes.ids;
     const filterKeywords = selectedFilters.values();
@@ -30,33 +31,18 @@ function intersection(selectedFilters, filterTable) {
   };
 }
 
-const filterByIngredients = intersection(
+const filterByIngredients = intersectionFilter(
   selectedFilters.ingredients,
   allRecipes.ingredients
 );
-const filterByAppliances = intersection(
+const filterByAppliances = intersectionFilter(
   selectedFilters.appliances,
   allRecipes.appliances
 );
-const filterByUstensils = intersection(
+const filterByUstensils = intersectionFilter(
   selectedFilters.ustensils,
   allRecipes.ustensils
 );
-
-// todo: need to be generic and move to utils
-function intersectionFilters() {
-  const array = [
-    filterByIngredients(),
-    filterByAppliances(),
-    filterByUstensils(),
-  ];
-
-  let sharedIds = array[0];
-  for (let i = 1; i < array.length; i++) {
-    sharedIds = sharedIds.filter(Set.prototype.has, new Set(array[i]));
-  }
-  return sharedIds;
-}
 
 /**
  * Collection of methods returning the remaining ingredients/appliances/ustensils.
@@ -153,7 +139,11 @@ function handleTagClick(event) {
     const filterName = clickedElement.dataset.name;
     selectedFilters[filterType].delete(filterName);
     clickedElement.remove();
-    const filteredRecipes = intersectionFilters();
+    const filteredRecipes = intersection([
+      filterByIngredients(),
+      filterByAppliances(),
+      filterByUstensils(),
+    ]);
     recipesCards.addCards(filteredRecipes);
   }
 }
@@ -260,7 +250,11 @@ class Filter {
    * ADD filter dropdown to the DOM.
    */
   addOptions() {
-    const filteredRecipes = intersectionFilters();
+    const filteredRecipes = intersection([
+      filterByIngredients(),
+      filterByAppliances(),
+      filterByUstensils(),
+    ]);
     const options = get[this.filterType](filteredRecipes);
     this._buildDropdownHtml(options);
     this._resizeOptionsList(options);
@@ -304,7 +298,11 @@ class Filter {
     const inputValue = this.textInput.value;
     let options = [];
     if (!inputValue.length) {
-      const filteredRecipes = intersectionFilters();
+      const filteredRecipes = intersection([
+        filterByIngredients(),
+        filterByAppliances(),
+        filterByUstensils(),
+      ]);
       options = get[this.filterType](filteredRecipes);
     } else
       options = tries[this.filterType].getPossibilities(
@@ -326,7 +324,11 @@ class Filter {
       !selectedFilters[this.filterType].has(target.textContent)
     ) {
       selectedFilters[this.filterType].add(target.textContent);
-      const filteredRecipes = intersectionFilters();
+      const filteredRecipes = intersection([
+        filterByIngredients(),
+        filterByAppliances(),
+        filterByUstensils(),
+      ]);
       const options = get[this.filterType](filteredRecipes);
       this._updateOptions(options);
       recipesCards.addCards(filteredRecipes);
