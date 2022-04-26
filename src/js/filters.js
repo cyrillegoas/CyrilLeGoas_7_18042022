@@ -50,19 +50,10 @@ function intersectionFilters() {
     filterByAppliances(),
     filterByUstensils(),
   ];
-  // todo: arrayWithoutEmptyItem need to be removed
-  const arrayWithoutEmptyItem = array.reduce((acc, item) => {
-    if (item.length) acc.push(item);
-    return acc;
-  }, []);
-  if (!arrayWithoutEmptyItem.length) return allRecipes.ids;
 
-  let sharedIds = arrayWithoutEmptyItem[0];
-  for (let i = 1; i < arrayWithoutEmptyItem.length; i++) {
-    sharedIds = sharedIds.filter(
-      Set.prototype.has,
-      new Set(arrayWithoutEmptyItem[i])
-    );
+  let sharedIds = array[0];
+  for (let i = 1; i < array.length; i++) {
+    sharedIds = sharedIds.filter(Set.prototype.has, new Set(array[i]));
   }
   return sharedIds;
 }
