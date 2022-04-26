@@ -283,9 +283,12 @@ class Filter {
    * Will open/close the dropdown depending of its current state.
    */
   _handleBtnEvent() {
-    const filteredRecipes = intersectionFilters();
-    const options = get[this.filterType](filteredRecipes);
-    this.isFilterOpen() ? this.clearOptions() : this.addOptions(options);
+    if (this.isFilterOpen()) this.clearOptions();
+    else {
+      const filteredRecipes = intersectionFilters();
+      const options = get[this.filterType](filteredRecipes);
+      this.addOptions(options);
+    }
   }
 
   /**
