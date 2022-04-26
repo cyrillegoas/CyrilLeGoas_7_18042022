@@ -296,9 +296,11 @@ class Filter {
    * Will open the dropdown if closed.
    */
   _handleInputEvent() {
-    const filteredRecipes = intersectionFilters();
-    const options = get[this.filterType](filteredRecipes);
-    if (!this.isFilterOpen()) this.addOptions(options);
+    if (!this.isFilterOpen()) {
+      const filteredRecipes = intersectionFilters();
+      const options = get[this.filterType](filteredRecipes);
+      this.addOptions(options);
+    }
   }
 
   /**
