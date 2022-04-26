@@ -338,6 +338,38 @@ class Filter {
 }
 
 /**
+ * Search bar
+ */
+const searchBar = {
+  init() {
+    this.input = document.querySelector('.search-primary__input');
+    this.input.addEventListener('keyup', () => this.filter());
+  },
+  filter() {
+    const inputValue = this.input.value;
+    if (inputValue.length < 3) {
+      this.filteredIds = allRecipes.ids;
+    } else {
+      this.filteredIds = intersection([
+        this.searchByingredients(),
+        this.searchBytitle(),
+        this.searchBydescription(),
+      ]);
+    }
+    const filteredRecipes = intersection([
+      this.filteredIds,
+      filterByIngredients(),
+      filterByAppliances(),
+      filterByUstensils(),
+    ]);
+    recipesCards.addCards(filteredRecipes);
+  },
+  searchByingredients() {},
+  searchBytitle() {},
+  searchBydescription() {},
+};
+
+/**
  * Filter initialization.
  */
 export function filterInit() {
@@ -354,6 +386,8 @@ export function filterInit() {
     filterByUstensils
   );
   const tagsContainer = document.querySelector('.tags-container');
+
+  searchBar.init();
 
   // CLOSE FILTERS IF CLICKED OUTSIDE OR ON OTHER FILTER
   ingredientFilter.filter.addEventListener('click', (event) => {
