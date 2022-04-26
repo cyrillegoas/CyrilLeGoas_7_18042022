@@ -114,13 +114,15 @@ main {
     }
   }
 
-  &__submit {
+  &__icon {
     flex-grow: 0;
     border: 0;
     background-color: $grey;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 0 1rem;
+    display: grid;
+    place-content: center center;
   }
 }
 
