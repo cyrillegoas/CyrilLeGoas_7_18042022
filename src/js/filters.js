@@ -258,9 +258,10 @@ class Filter {
 
   /**
    * ADD filter dropdown to the DOM.
-   * @param {*} options - array of ingredients/appliances/ustensils
    */
-  addOptions(options) {
+  addOptions() {
+    const filteredRecipes = intersectionFilters();
+    const options = get[this.filterType](filteredRecipes);
     this._buildDropdownHtml(options);
     this._resizeOptionsList(options);
     this._setfilterWidth();
@@ -284,11 +285,7 @@ class Filter {
    */
   _handleBtnEvent() {
     if (this.isFilterOpen()) this.clearOptions();
-    else {
-      const filteredRecipes = intersectionFilters();
-      const options = get[this.filterType](filteredRecipes);
-      this.addOptions(options);
-    }
+    else this.addOptions();
   }
 
   /**
@@ -296,11 +293,7 @@ class Filter {
    * Will open the dropdown if closed.
    */
   _handleInputEvent() {
-    if (!this.isFilterOpen()) {
-      const filteredRecipes = intersectionFilters();
-      const options = get[this.filterType](filteredRecipes);
-      this.addOptions(options);
-    }
+    if (!this.isFilterOpen()) this.addOptions();
   }
 
   /**
