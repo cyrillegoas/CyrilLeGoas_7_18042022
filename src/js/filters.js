@@ -323,8 +323,8 @@ class Filter {
     const { target } = event;
     if (
       target.classList.contains('filter__option') &&
-      target.textContent !== 'no match'
-      // todo: need to check if keyword is not already added
+      target.textContent !== 'no match' &&
+      !selectedFilters[this.filterType].has(target.textContent)
     ) {
       selectedFilters[this.filterType].add(target.textContent);
       const filteredRecipes = intersectionFilters();
