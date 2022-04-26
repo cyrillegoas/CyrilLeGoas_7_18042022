@@ -1,6 +1,6 @@
 import { allRecipes, tries } from './dataBuilder';
 import { recipesCards } from './cards';
-import { intersection } from './utils';
+import { intersection, union } from './utils';
 
 const selectedFilters = {
   ingredients: new Set(),
@@ -346,11 +346,12 @@ const searchBar = {
     this.input.addEventListener('keyup', () => this.filter());
   },
   filter() {
+    // TODO: fix -> trigger for every keyup even when repaint is not needed
     const inputValue = this.input.value.toLowerCase();
     if (inputValue.length < 3) {
       this.filteredIds = allRecipes.ids;
     } else {
-      this.filteredIds = intersection([
+      this.filteredIds = union([
         this.searchByingredients(inputValue),
         this.searchBytitle(inputValue),
         this.searchBydescription(inputValue),
@@ -365,7 +366,7 @@ const searchBar = {
     recipesCards.addCards(filteredRecipes);
   },
   searchByingredients(string) {
-    return allRecipes.ids;
+    return [];
   },
   searchBytitle(string) {
     const ids = [];
@@ -376,7 +377,12 @@ const searchBar = {
     return ids;
   },
   searchBydescription(string) {
-    return allRecipes.ids;
+    const ids = [];
+    const regex = new RegExp(`${string}`);
+    allRecipes.table.forEach((value) => {
+      if (regex.test(value.description.toLowerCase())) ids.push(value.id);
+    });
+    return ids;
   },
 };
 
