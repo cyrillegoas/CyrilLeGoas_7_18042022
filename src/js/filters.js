@@ -366,7 +366,18 @@ const searchBar = {
     recipesCards.addCards(filteredRecipes);
   },
   searchByingredients(string) {
-    return [];
+    const ids = [];
+    const regex = new RegExp(`${string}`);
+    allRecipes.table.forEach((value) => {
+      const { ingredients } = value;
+      for (let i = 0; i < ingredients.length; i++) {
+        if (regex.test(ingredients[i].ingredient.toLowerCase())) {
+          ids.push(value.id);
+          break;
+        }
+      }
+    });
+    return ids;
   },
   searchBytitle(string) {
     const ids = [];
