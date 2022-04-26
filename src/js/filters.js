@@ -346,14 +346,14 @@ const searchBar = {
     this.input.addEventListener('keyup', () => this.filter());
   },
   filter() {
-    const inputValue = this.input.value;
+    const inputValue = this.input.value.toLowerCase();
     if (inputValue.length < 3) {
       this.filteredIds = allRecipes.ids;
     } else {
       this.filteredIds = intersection([
-        this.searchByingredients(),
-        this.searchBytitle(),
-        this.searchBydescription(),
+        this.searchByingredients(inputValue),
+        this.searchBytitle(inputValue),
+        this.searchBydescription(inputValue),
       ]);
     }
     const filteredRecipes = intersection([
@@ -364,9 +364,20 @@ const searchBar = {
     ]);
     recipesCards.addCards(filteredRecipes);
   },
-  searchByingredients() {},
-  searchBytitle() {},
-  searchBydescription() {},
+  searchByingredients(string) {
+    return allRecipes.ids;
+  },
+  searchBytitle(string) {
+    const ids = [];
+    const regex = new RegExp(`${string}`);
+    allRecipes.table.forEach((value) => {
+      if (regex.test(value.name.toLowerCase())) ids.push(value.id);
+    });
+    return ids;
+  },
+  searchBydescription(string) {
+    return allRecipes.ids;
+  },
 };
 
 /**
