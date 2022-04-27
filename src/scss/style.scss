@@ -282,11 +282,12 @@ main {
 
   &__instructions-wrapper {
     display: flex;
+    gap: 1rem;
   }
 
   &__ingredients {
     flex: 1;
-    flex-basis: 50%;
+    flex-basis: calc(50% - 0.5rem);
     font-size: 1.2rem;
 
     & span {
@@ -296,7 +297,7 @@ main {
 
   &__instructions {
     flex: 1;
-    flex-basis: 50%;
+    flex-basis: calc(50% - 0.5rem);
     font-size: 1.2rem;
     font-family: $roboto;
   }
