@@ -8,6 +8,7 @@ function buildData(recipes) {
   const appliances = {};
   const ustensils = {};
   const titles = {};
+  const descriptions = {};
 
   recipes.forEach((recipe) => {
     const appliance = recipe.appliance.toLowerCase();
@@ -15,6 +16,7 @@ function buildData(recipes) {
       ustensil.toLowerCase()
     );
     let title = recipe.name;
+    let { description } = recipe;
     table.set(recipe.id, recipe);
     ids.push(recipe.id);
 
@@ -41,8 +43,26 @@ function buildData(recipes) {
         else titles[wordLower].push(recipe.id);
       }
     });
+
+    description = description.replace(/[.,;:()']/g, ' ').replace(/\s+/g, ' ');
+    description = description.split(' ');
+    description.forEach((word) => {
+      const wordLower = word.toLowerCase();
+      if (wordLower.length > 2) {
+        if (!descriptions[wordLower]) descriptions[wordLower] = [recipe.id];
+        else descriptions[wordLower].push(recipe.id);
+      }
+    });
   });
-  return { table, ids, ingredients, appliances, ustensils, titles };
+  return {
+    table,
+    ids,
+    ingredients,
+    appliances,
+    ustensils,
+    titles,
+    descriptions,
+  };
 }
 
 const allRecipes = buildData(recipes);
@@ -52,6 +72,7 @@ const tries = {
   appliances: new Trie(Object.keys(allRecipes.appliances)),
   ustensils: new Trie(Object.keys(allRecipes.ustensils)),
   titles: new Trie(Object.keys(allRecipes.titles)),
+  descriptions: new Trie(Object.keys(allRecipes.descriptions)),
 };
 
 export { allRecipes, tries };

@@ -381,8 +381,11 @@ const searchBar = {
     }, []);
   },
   searchBydescription(string) {
-    const ids = [];
-    return ids;
+    const possibilities = tries.descriptions.getPossibilities(string);
+    return possibilities.reduce((ids, wordFromDesc) => {
+      ids.push(...allRecipes.descriptions[wordFromDesc]);
+      return ids;
+    }, []);
   },
 };
 
