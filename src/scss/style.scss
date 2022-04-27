@@ -116,6 +116,7 @@ main {
 
     &:focus {
       z-index: 10;
+      outline: 2px solid $blue;
     }
   }
 
