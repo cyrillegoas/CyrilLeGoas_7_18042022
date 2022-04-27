@@ -414,25 +414,31 @@ export function filterInit() {
   searchBar.init();
 
   // CLOSE FILTERS IF CLICKED OUTSIDE OR ON OTHER FILTER
+
+  function closeDropdown(event) {
+    const type = event ? event.currentTarget.dataset.type : undefined;
+    if (type !== 'ingredients' && ingredientFilter.isFilterOpen())
+      ingredientFilter.clearOptions();
+    if (type !== 'appliances' && applianceFilter.isFilterOpen())
+      applianceFilter.clearOptions();
+    if (type !== 'ustensils' && ustensilsFilter.isFilterOpen())
+      ustensilsFilter.clearOptions();
+  }
+
   ingredientFilter.filter.addEventListener('click', (event) => {
     event.stopPropagation();
-    if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
-    if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
+    closeDropdown(event);
   });
   applianceFilter.filter.addEventListener('click', (event) => {
     event.stopPropagation();
-    if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
-    if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
+    closeDropdown(event);
   });
   ustensilsFilter.filter.addEventListener('click', (event) => {
     event.stopPropagation();
-    if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
-    if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
+    closeDropdown(event);
   });
   document.addEventListener('click', () => {
-    if (ingredientFilter.isFilterOpen()) ingredientFilter.clearOptions();
-    if (applianceFilter.isFilterOpen()) applianceFilter.clearOptions();
-    if (ustensilsFilter.isFilterOpen()) ustensilsFilter.clearOptions();
+    closeDropdown();
   });
 
   // REMOVE TAG IF CLICKED
