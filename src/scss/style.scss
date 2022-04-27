@@ -254,7 +254,8 @@ main {
 
   &__title-wrapper {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    gap: 5rem;
     margin-bottom: 1.8rem;
   }
 
@@ -268,6 +269,7 @@ main {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    flex-shrink: 0;
   }
 
   &__timer-icon {
