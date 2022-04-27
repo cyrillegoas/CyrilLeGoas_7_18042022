@@ -158,8 +158,10 @@ class Filter {
 
     // EVENT LISTENERS
     openOptionBtn.addEventListener('click', () => this._handleBtnEvent());
-    this.textInput.addEventListener('click', () => this._handleInputEvent());
-    this.textInput.addEventListener('keyup', () => this._handleKeyupEvent());
+    this.textInput.addEventListener('focus', () => this._handleInputEvent());
+    this.textInput.addEventListener('keyup', (event) =>
+      this._handleKeyupEvent(event)
+    );
   }
 
   /**
@@ -172,7 +174,6 @@ class Filter {
         class="filter__dropdown"
         role="listbox"
         aria-label="filter options"
-        tabindex="0"
       >
         ${optionsHtml(options)}
       </ul>
@@ -296,7 +297,8 @@ class Filter {
    * Handle keyup event.
    * Will try to auto-complete the user input and update options list accordingly.
    */
-  _handleKeyupEvent() {
+  _handleKeyupEvent(event) {
+    event.stopPropagation();
     const inputValue = this.textInput.value;
     let options = [];
     if (!inputValue.length) {
@@ -415,30 +417,53 @@ export function filterInit() {
 
   // CLOSE FILTERS IF CLICKED OUTSIDE OR ON OTHER FILTER
 
-  function closeDropdown(event) {
-    const type = event ? event.currentTarget.dataset.type : undefined;
-    if (type !== 'ingredients' && ingredientFilter.isFilterOpen())
+  function closeDropdown(filterType) {
+    if (filterType !== 'ingredients' && ingredientFilter.isFilterOpen())
       ingredientFilter.clearOptions();
-    if (type !== 'appliances' && applianceFilter.isFilterOpen())
+    if (filterType !== 'appliances' && applianceFilter.isFilterOpen())
       applianceFilter.clearOptions();
-    if (type !== 'ustensils' && ustensilsFilter.isFilterOpen())
+    if (filterType !== 'ustensils' && ustensilsFilter.isFilterOpen())
       ustensilsFilter.clearOptions();
   }
 
   ingredientFilter.filter.addEventListener('click', (event) => {
     event.stopPropagation();
-    closeDropdown(event);
+    closeDropdown(event.currentTarget.dataset.type);
   });
   applianceFilter.filter.addEventListener('click', (event) => {
     event.stopPropagation();
-    closeDropdown(event);
+    closeDropdown(event.currentTarget.dataset.type);
   });
   ustensilsFilter.filter.addEventListener('click', (event) => {
     event.stopPropagation();
-    closeDropdown(event);
+    closeDropdown(event.currentTarget.dataset.type);
   });
   document.addEventListener('click', () => {
     closeDropdown();
+  });
+
+  ingredientFilter.textInput.addEventListener('focus', (event) => {
+    const { type } = event.currentTarget.closest('.filter').dataset;
+    closeDropdown(type);
+  });
+  applianceFilter.textInput.addEventListener('focus', (event) => {
+    const { type } = event.currentTarget.closest('.filter').dataset;
+    closeDropdown(type);
+  });
+  ustensilsFilter.textInput.addEventListener('focus', (event) => {
+    const { type } = event.currentTarget.closest('.filter').dataset;
+    closeDropdown(type);
+  });
+
+  document.addEventListener('keyup', (event) => {
+    if (
+      event.key === 'Tab' &&
+      document.activeElement !== ingredientFilter.textInput &&
+      document.activeElement !== applianceFilter.textInput &&
+      document.activeElement !== ustensilsFilter.textInput
+    ) {
+      closeDropdown();
+    }
   });
 
   // REMOVE TAG IF CLICKED
