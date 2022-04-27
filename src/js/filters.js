@@ -374,8 +374,11 @@ const searchBar = {
     }, []);
   },
   searchBytitle(string) {
-    const ids = [];
-    return ids;
+    const possibilities = tries.titles.getPossibilities(string);
+    return possibilities.reduce((ids, wordFromTitle) => {
+      ids.push(...allRecipes.titles[wordFromTitle]);
+      return ids;
+    }, []);
   },
   searchBydescription(string) {
     const ids = [];
