@@ -10,3 +10,12 @@ export function intersection(arrays) {
   }
   return sharedItems;
 }
+
+/**
+ * Make an union between arrays
+ * @param {array} arrays - array of arrays.
+ * @returns {array} all items without duplicate
+ */
+export function union(arrays) {
+  return [...new Set(arrays.flat())];
+}

@@ -1,6 +1,6 @@
 import { allRecipes, tries } from './dataBuilder';
 import { recipesCards } from './cards';
-import { intersection } from './utils';
+import { intersection, union } from './utils';
 
 const selectedFilters = {
   ingredients: new Set(),
@@ -341,19 +341,21 @@ class Filter {
  * Search bar
  */
 const searchBar = {
+  filteredIds: allRecipes.ids,
   init() {
     this.input = document.querySelector('.search-primary__input');
     this.input.addEventListener('keyup', () => this.filter());
   },
   filter() {
-    const inputValue = this.input.value;
+    const inputValue = this.input.value.toLowerCase();
     if (inputValue.length < 3) {
+      if (this.filteredIds === allRecipes.ids) return;
       this.filteredIds = allRecipes.ids;
     } else {
-      this.filteredIds = intersection([
-        this.searchByingredients(),
-        this.searchBytitle(),
-        this.searchBydescription(),
+      this.filteredIds = union([
+        this.searchByingredients(inputValue),
+        this.searchBytitle(inputValue),
+        this.searchBydescription(inputValue),
       ]);
     }
     const filteredRecipes = intersection([
@@ -364,9 +366,21 @@ const searchBar = {
     ]);
     recipesCards.addCards(filteredRecipes);
   },
-  searchByingredients() {},
-  searchBytitle() {},
-  searchBydescription() {},
+  searchByingredients(string) {
+    const possibilities = tries.ingredients.getPossibilities(string);
+    return possibilities.reduce((ids, ingredient) => {
+      ids.push(...allRecipes.ingredients[ingredient]);
+      return ids;
+    }, []);
+  },
+  searchBytitle(string) {
+    const ids = [];
+    return ids;
+  },
+  searchBydescription(string) {
+    const ids = [];
+    return ids;
+  },
 };
 
 /**
