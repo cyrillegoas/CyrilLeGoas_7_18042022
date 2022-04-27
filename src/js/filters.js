@@ -143,6 +143,7 @@ function handleTagClick(event) {
       filterByIngredients(),
       filterByAppliances(),
       filterByUstensils(),
+      searchBar.filteredIds,
     ]);
     recipesCards.addCards(filteredRecipes);
   }
@@ -254,6 +255,7 @@ class Filter {
       filterByIngredients(),
       filterByAppliances(),
       filterByUstensils(),
+      searchBar.filteredIds,
     ]);
     const options = get[this.filterType](filteredRecipes);
     this._buildDropdownHtml(options);
@@ -302,6 +304,7 @@ class Filter {
         filterByIngredients(),
         filterByAppliances(),
         filterByUstensils(),
+        searchBar.filteredIds,
       ]);
       options = get[this.filterType](filteredRecipes);
     } else
@@ -328,6 +331,7 @@ class Filter {
         filterByIngredients(),
         filterByAppliances(),
         filterByUstensils(),
+        searchBar.filteredIds,
       ]);
       const options = get[this.filterType](filteredRecipes);
       this._updateOptions(options);
