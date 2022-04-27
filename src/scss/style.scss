@@ -3,6 +3,7 @@ $blue: #3282f7;
 $green: #68d9a4;
 $red: #ed6454;
 $grey: #e7e7e7;
+$dark-grey: hsl(0, 0%, 40%);
 $white: #ffffff;
 
 // LAYOUT
@@ -305,6 +306,14 @@ main {
     max-height: 18rem;
     overflow: auto;
   }
+}
+
+.no-recipes {
+  font-weight: bold;
+  font-size: 2rem;
+  grid-column: span 3;
+  justify-self: center;
+  color: $dark-grey;
 }
 
 // TAGS
