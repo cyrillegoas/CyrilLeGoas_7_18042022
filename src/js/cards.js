@@ -33,8 +33,12 @@ export const recipesCards = {
                       .ingredients.reduce((itemList, item) => {
                         itemList += `<li class="recipe__ingredient"><span>${
                           item.ingredient
-                        }:</span> ${item.quantity} ${
-                          item.unit ? item.unit : ''
+                        }${
+                          item.quantity
+                            ? `:</span> ${item.quantity} ${
+                                item.unit ? item.unit : ''
+                              }`
+                            : '</span>'
                         }</li>`;
                         return itemList;
                       }, ''))()}
