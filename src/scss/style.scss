@@ -91,7 +91,7 @@ h6 {
 main {
   max-width: $max_width;
   margin: auto;
-  padding: 0 1rem;
+  padding: 0 1rem 4.2rem;
 }
 
 // SEARCH
@@ -311,8 +311,8 @@ main {
 .tags-container {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 1rem;
-  margin-bottom: 2.5rem;
 }
 .tag {
   padding: 0.9rem 2rem;
@@ -324,6 +324,10 @@ main {
   width: fit-content;
   border-radius: 5px;
   cursor: pointer;
+
+  &:last-child {
+    margin-bottom: 2.5rem;
+  }
 
   &__name {
     display: block;
