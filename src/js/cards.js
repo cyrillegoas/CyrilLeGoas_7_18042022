@@ -9,7 +9,7 @@ export const recipesCards = {
     else {
       ids.forEach((id) => {
         html += `
-          <li class="recipe">
+          <li class="recipe" tabindex="0">
             <img class="recipe__img" src="https://picsum.photos/380/300" alt="" />
             <div class="recipe__desc">
               <div class="recipe__title-wrapper">
