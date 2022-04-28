@@ -144,6 +144,10 @@ main {
     font-size: 1.8rem;
     padding: 0 2.4rem;
 
+    @include respond-to("smaller") {
+      border-radius: 5px;
+    }
+
     &:focus {
       z-index: 10;
       outline: 2px solid $blue;
@@ -159,6 +163,10 @@ main {
     padding: 0 1rem;
     display: grid;
     place-content: center center;
+
+    @include respond-to("smaller") {
+      display: none;
+    }
   }
 }
 
