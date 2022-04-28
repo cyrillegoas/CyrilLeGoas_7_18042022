@@ -8,6 +8,7 @@ $white: #ffffff;
 
 // LAYOUT
 $max_width: 1260px;
+$min_width: 30rem;
 
 //FONT
 $lato: Lato, sans-serif;
@@ -113,6 +114,7 @@ h6 {
 // HEADER
 .header {
   max-width: $max_width;
+  min-width: $min-width;
   margin: 0 auto 1.7rem;
   padding: 4.2rem 1rem 0;
 
@@ -125,6 +127,7 @@ h6 {
 // MAIN
 main {
   max-width: $max_width;
+  min-width: $min-width;
   margin: auto;
   padding: 0 1rem 4.2rem;
 }
@@ -291,7 +294,7 @@ main {
 // RECIPES
 .recipes {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(38rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
   gap: 5rem;
 }
 
