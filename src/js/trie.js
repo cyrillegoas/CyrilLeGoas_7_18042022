@@ -1,8 +1,9 @@
 class Node {
   constructor(string) {
-    this.letter = string[0] ?? "";
+    this.letter = string[0] ?? '';
     this.children = {};
     this.completeWord = false;
+    this.partOf = [];
   }
 
   _createNode(letter) {
@@ -11,14 +12,15 @@ class Node {
     return node;
   }
 
-  add(string) {
+  add(string, options = {}) {
     if (!string.length) return;
 
     const firstLetter = string[0].toLowerCase();
     const remains = string.substring(1);
     const nextNode =
       this.children[firstLetter] ?? this._createNode(firstLetter);
-    if (remains.length) nextNode.add(remains);
+    if (remains.length) nextNode.add(remains, options);
+    else if (options.partOf) nextNode.partOf.push(options.partOf);
     else nextNode.completeWord = true;
   }
 
@@ -36,14 +38,15 @@ class Node {
     const possibilities = [];
 
     if (this.completeWord) possibilities.push(string);
+    if (this.partOf.length) possibilities.push(...this.partOf);
 
     if (!this.children) {
       return possibilities;
-    } else {
-      Object.values(this.children).forEach((node) => {
-        possibilities.push(...node._possibilities(`${string}${node.letter}`));
-      });
     }
+    Object.values(this.children).forEach((node) => {
+      possibilities.push(...node._possibilities(`${string}${node.letter}`));
+    });
+
     return possibilities;
   }
 
@@ -58,15 +61,25 @@ class Node {
   }
 }
 
-export class Trie{
-  constructor(words){
-    this.root = new Node("");
+export class Trie {
+  constructor(words) {
+    this.root = new Node('');
     words.forEach((word) => {
       this.root.add(word);
+      word
+        .replace(/[.,;:()']/g, ' ')
+        .replace(/\s+/g, ' ')
+        .split(' ')
+        .slice(1)
+        .forEach((item) => {
+          if (item.length > 2) {
+            this.root.add(item, { partOf: word });
+          }
+        });
     });
   }
 
-  getPossibilities(string){
+  getPossibilities(string) {
     return this.root.complete(string.toLowerCase());
   }
 }
