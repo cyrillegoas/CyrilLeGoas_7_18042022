@@ -1,6 +1,11 @@
 import { recipes } from './recipes';
 import { Trie } from './trie';
 
+/**
+ * Build data structure for fast lookup.
+ * @param {object} recipes - collection of recipes
+ * @returns {object} data
+ */
 function buildData(recipes) {
   const table = new Map();
   const ids = [];
@@ -10,50 +15,83 @@ function buildData(recipes) {
   const titles = {};
   const descriptions = {};
 
-  recipes.forEach((recipe) => {
+  /**
+   * ADD item and recipe id to hash table.
+   * @param {object} hashTable - hash table used for fast lookup {item:[ids]}
+   * @param {string} item - name of the item
+   * @param {number} recipeId - id of the recipe
+   */
+  function addToHashTable(hashTable, item, recipeId) {
+    if (!hashTable[item]) hashTable[item] = [recipeId];
+    else hashTable[item].push(recipeId);
+  }
+
+  /**
+   * Get appliances used in the recipe.
+   * @param {object} recipe
+   */
+  function getAppliances(recipe) {
     const appliance = recipe.appliance.toLowerCase();
+    addToHashTable(appliances, appliance, recipe.id);
+  }
+
+  /**
+   * Get ustensils used in the recipe.
+   * @param {object} recipe
+   */
+  function getUstensils(recipe) {
     const ustensilList = recipe.ustensils.map((ustensil) =>
       ustensil.toLowerCase()
     );
-    let title = recipe.name;
-    let { description } = recipe;
+    ustensilList.forEach((ustensil) => {
+      addToHashTable(ustensils, ustensil, recipe.id);
+    });
+  }
+
+  /**
+   * Get ingredients used in the recipe.
+   * @param {object} recipe
+   */
+  function getIngredients(recipe) {
+    recipe.ingredients.forEach((item) => {
+      const ingredient = item.ingredient.toLowerCase();
+      addToHashTable(ingredients, ingredient, recipe.id);
+    });
+  }
+
+  /**
+   * Parse a string and add every word (with length > 2) to an hash table
+   * @param {object} hashTable - hash table used for fast lookup {item:[ids]}
+   * @param {string} string - string to parse
+   * @param {number} recipeId - id of the recipe
+   */
+  function parseString(hashTable, string, recipeId) {
+    const stringToParse = string;
+    stringToParse
+      .replace(/[.,;:()']/g, ' ')
+      .replace(/\s+/g, ' ')
+      .split(' ')
+      .map((word) => word.toLowerCase())
+      .forEach((word) => {
+        if (word.length > 2) {
+          addToHashTable(hashTable, word, recipeId);
+        }
+      });
+  }
+
+  // LOOP THROUGH EACH RECIPES
+  recipes.forEach((recipe) => {
+    getAppliances(recipe);
+    getUstensils(recipe);
+    getIngredients(recipe);
+
     table.set(recipe.id, recipe);
     ids.push(recipe.id);
 
-    recipe.ingredients.forEach((item) => {
-      const ingredient = item.ingredient.toLowerCase();
-      if (!ingredients[ingredient]) ingredients[ingredient] = [recipe.id];
-      else ingredients[ingredient].push(recipe.id);
-    });
-
-    if (!appliances[appliance]) appliances[appliance] = [recipe.id];
-    else appliances[appliance].push(recipe.id);
-
-    ustensilList.forEach((ustensil) => {
-      if (!ustensils[ustensil]) ustensils[ustensil] = [recipe.id];
-      else ustensils[ustensil].push(recipe.id);
-    });
-
-    title = title.replace(/[.,;:()']/g, ' ').replace(/\s+/g, ' ');
-    title = title.split(' ');
-    title.forEach((word) => {
-      const wordLower = word.toLowerCase();
-      if (wordLower.length > 2) {
-        if (!titles[wordLower]) titles[wordLower] = [recipe.id];
-        else titles[wordLower].push(recipe.id);
-      }
-    });
-
-    description = description.replace(/[.,;:()']/g, ' ').replace(/\s+/g, ' ');
-    description = description.split(' ');
-    description.forEach((word) => {
-      const wordLower = word.toLowerCase();
-      if (wordLower.length > 2) {
-        if (!descriptions[wordLower]) descriptions[wordLower] = [recipe.id];
-        else descriptions[wordLower].push(recipe.id);
-      }
-    });
+    parseString(titles, recipe.name, recipe.id);
+    parseString(descriptions, recipe.description, recipe.id);
   });
+
   return {
     table,
     ids,

@@ -4,5 +4,3 @@ import { filterInit } from './filters';
 
 recipesCards.addCards(allRecipes.ids);
 filterInit();
-
-console.log(allRecipes);

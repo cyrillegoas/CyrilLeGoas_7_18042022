@@ -30,14 +30,6 @@ class Node {
         ? nextNode
         : nextNode._findLastNode(string.substring(1))
       : null;
-
-    // if (string.length === 1) {
-    //   return nextNode ? nextNode : null;
-    // } else {
-    //   return nextNode
-    //     ? nextNode._findLastNode(string.substring(1))
-    //     : null;
-    // }
   }
 
   _possibilities(string) {

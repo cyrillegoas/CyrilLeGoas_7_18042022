@@ -2,6 +2,11 @@ import { allRecipes } from './dataBuilder';
 
 export const recipesCards = {
   cardsContainer: document.querySelector('.recipes'),
+
+  /**
+   *  Add recipe cards to DOM.
+   * @param {array} ids - array of recipe ids
+   */
   addCards(ids) {
     let html = ``;
     if (!ids.length)
@@ -53,6 +58,10 @@ export const recipesCards = {
     }
     this.cardsContainer.innerHTML = html;
   },
+
+  /**
+   * Remove cards from DOM.
+   */
   clearCards() {
     this.cardsContainer.innerHTML = '';
   },
