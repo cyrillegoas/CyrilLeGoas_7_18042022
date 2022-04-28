@@ -2,6 +2,8 @@ import { allRecipes, tries } from './dataBuilder';
 import { recipesCards } from './cards';
 import { intersection, union } from './utils';
 
+const MQ_SMALL_SCREEN = 970;
+
 const selectedFilters = {
   ingredients: new Set(),
   appliances: new Set(),
@@ -214,9 +216,11 @@ class Filter {
    * Update the filter width to match the dropdown.
    */
   _setfilterWidth() {
-    const dropdown = this.filter.querySelector('.filter__dropdown');
-    const dropdownWidth = dropdown.clientWidth;
-    this.filter.style.width = `${dropdownWidth}px`;
+    if (window.screen.width > MQ_SMALL_SCREEN) {
+      const dropdown = this.filter.querySelector('.filter__dropdown');
+      const dropdownWidth = dropdown.clientWidth;
+      this.filter.style.width = `${dropdownWidth}px`;
+    }
   }
 
   /**
