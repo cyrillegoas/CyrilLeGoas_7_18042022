@@ -122,7 +122,7 @@ function addTag(name, type) {
                   <span class="tag__name">${name}</span>
                   <img
                     class="tag__remove-icon"
-                    src="./public/icons/close.svg"
+                    src="${import.meta.env.BASE_URL}icons/close.svg"
                     alt="remove tag"
                   />
                 </li>`;

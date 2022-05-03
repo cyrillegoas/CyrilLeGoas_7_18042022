@@ -22,7 +22,7 @@ export const recipesCards = {
                 <div class="recipe__timer-wrapper">
                   <img
                     class="recipe__timer-icon"
-                    src="./public/icons/clock.svg"
+                    src="${import.meta.env.BASE_URL}icons/clock.svg"
                     alt="clock"
                   />
                   <span class="recipe__timer-min">${
